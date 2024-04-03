@@ -1,2 +1,2 @@
 # TIL
-This repository is for learning React.js
+💡 This repository is for learning React.js
