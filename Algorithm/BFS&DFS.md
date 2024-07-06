@@ -1,6 +1,6 @@
 # 📕 탐색 알고리즘 BFS & DFS 
 
-## DFS(Depth First Search) -> stack으로 구현한다 
+## DFS(Depth First Search) -> stack으로 구현한다 (재귀함수)
 
 ➡️ **깊이 우선 탐색**이라고 부르며, 그래프에서 깊은 부분을 우선적으로 탐색하는 알고리즘 </br>
 
@@ -59,3 +59,99 @@ print(graph)
 ```py
 출력 : [[(1,7), (2,,5)], [(0,7)], [(0,5)]]
 ```
+## 어떤게 더 효율적일까 ? 🤔
+➡️  `인접 리스트`는 연결된 정보만을 저장하기 때문에 `인접 행렬`보다 더 효율적으로 메모리 사용이 가능하다 
+### 하지만
+➡️ `인접 리스트` 방식은 `인접 행렬`보다 느리다는 특징이 있다. 
+
+```py
+#DFS 메서드 정의
+def dfs(graph, v, visited):
+  #현재 노드를 방문 처리
+  visited[v] = True
+  print(v, end= '')
+  #현재 노드와 연결된 다른 노드를 재귀적으로 방문
+  for i in graph[v]:
+    if not visited[i]:
+      dfs(graph, i, visited)
+
+#각 노드가 연결된 정보를 리스트 자료형으로 표현(2차원 리스트)
+graph = [
+  [],
+  [2, 3, 8],
+  [1,7],
+  [1,4,5],
+  [3,5],
+  [3,4],
+  [7],
+  [2,6,8],
+  [1,7]
+]
+
+#각 노드가 방문된 정보를 리스트 자료형으로 표현(1차원 리스트)
+visited = [False] * 9
+
+#정의된 DFS 함수 호출
+dfs(graph, 1, visited)
+```
+```py
+출력 : 1 2 7 6 8 3 4 5
+```
+-----------------
+
+## BFS(Breadth First Search) -> queue로 구현한다 
+
+➡️ **너비 우선 탐색**이라고 부르며, 그래프에서 가까운 부분을 우선적으로 탐색하는 알고리즘 </br>
+
+<img width="331" alt="스크린샷 2024-07-06 오후 4 44 36" src="https://github.com/subinsong01/TIL/assets/134045937/3559f15c-0301-4afb-b85d-a91e267ea0fa">
+
+### - deque 라이브러리를 활용한다 ➡️ O(N)의 시간이 소요된다 
+### - 일반적으로 DFS 보다 수행시간이 좋다. 
+
+```py
+#BFS 예제
+
+from collections import deque
+
+# BFS 메서드 정리
+def bfs(graph, start, visited):
+  #큐(Queue) 구현을 위해서 deque 라이브러리 사용
+  queue = deque([start])
+  #현재 노드를 방문 처리
+  visited[start] = True
+  #큐가 빌 때까지 반복
+  while queue:
+    #큐에서 하나의 원소를 뽑아 출력
+    v = queue.popleft()
+    print(v, end='')
+    # 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
+    for i in graph[v]:
+      if not visited[i]:
+        queue.append(i)
+        visited[i] = True
+
+
+#각 노드가 연결된 정보를 리스트 자료형으로 표현(2차원 리스트)
+graph = [
+  [],
+  [2, 3, 8],
+  [1,7],
+  [1,4,5],
+  [3,5],
+  [3,4],
+  [7],
+  [2,6,8],
+  [1,7]
+]
+
+#각 노드가 방문된 정보를 리스트 자료형으로 표현(1차원 리스트)
+visited = [False] * 9
+
+#정의된 BFS 함수 호출
+bfs(graph, 1, visited)
+
+```py
+출력 : 1 2 3 8 7 4 5 6 
+```
+
+
